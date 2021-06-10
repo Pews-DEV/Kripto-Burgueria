@@ -1,4 +1,7 @@
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import java.util.*;
 
 import java.awt.Font;
@@ -9,15 +12,42 @@ import java.awt.event.ActionListener;
 public class Ingredientes {
     public JPanel ultima_tela;
     public Font font_button;
+	public Font font_padrao = new Font("Contrail One", Font.PLAIN, 48);
     public JFrame main_frame;
+    public JButton finalizar;
+    public ArrayList<Integer> pedidos;
+    public ArrayList<JSpinner> campos = new ArrayList<JSpinner>(
+        List.of(new JSpinner(), new JSpinner(), new JSpinner(), new JSpinner(), new JSpinner(), new JSpinner(), new JSpinner())
+    );
+
     private String setor;
     private Integer position = 0; 
-
 
     public JPanel main_container = new JPanel();
 
     public HashMap<String, ArrayList<String>> options = new HashMap<String, ArrayList<String>>();
     public HashMap<String, ArrayList<Float>> precos = new HashMap<String, ArrayList<Float>>();
+
+    public Ingredientes(JFrame main_frame, Font font_button, JPanel ultima_tela, String setor, ArrayList<Integer> pedidos, JButton finalizar) {
+        this.ultima_tela = ultima_tela;
+        this.main_frame = main_frame;
+        this.font_button = font_button;
+        this.setor = setor;
+        this.pedidos = pedidos;
+        this.finalizar = finalizar;
+
+    }
+
+    public void start(){
+        // Iniciando opções de compra e preços
+        this.iniciar_opcoes();
+        this.iniciar_precos();
+
+        this.ultima_tela.setVisible(false);
+
+        // Iniciando nova tela
+        this.iniciar_nova_tela();
+    }
 
     public void iniciar_opcoes(){
         options.put("Pães", new ArrayList<>(List.of("Pão Francês","Pão Carteira","Pão de Hambúrguer","Pão Árabe")));
@@ -38,47 +68,44 @@ public class Ingredientes {
     }
 
     public void create_buttons(){
-        ArrayList new_options_widget = this.options.get(this.setor);
-        ArrayList new_options_preco = this.precos.get(this.setor);
+        ArrayList<String> new_options_widget = this.options.get(this.setor);
+        ArrayList<Float> new_options_preco = this.precos.get(this.setor);
 
         new_options_widget.forEach((item) -> {
-            // Valor da opção
-            String preco = new_options_preco.get(this.position).toString();
-            Float preco_f = Float.parseFloat(preco);
-
-            // Label da opção
-            JLabel item_label = new JLabel(item.toString());
-            item_label.setBounds(50, 50 + (this.position * 50), 220, 150);
-            item_label.setForeground(Color.decode("#ebf1fb"));
-            this.main_container.add(item_label);
-
-            JLabel item_label_2 = new JLabel("---------------------------------------------");
-            item_label_2.setBounds(250, 50 + (this.position * 50), 250, 150);
-            item_label_2.setForeground(Color.decode("#ebf1fb"));
-            this.main_container.add(item_label_2);
-
-            JLabel item_label_3 = new JLabel("R$ " + String.format("%.02f", preco_f));
-            item_label_3.setBounds(500, 50 + (this.position * 50), 220, 150);
-            item_label_3.setForeground(Color.decode("#ebf1fb"));
-            this.main_container.add(item_label_3);
-            
-
-            JTextField value = new JTextField(5);
-            value.setBounds(600, 115 + (this.position * 50), 40, 20);
-            this.main_container.add(value);
-            //Integer preco  = integer.toString(value)
-            //System.out.println();
-            //String teste = value.getText();
-            
-            //Double valor = Double.parseDouble(value.getText());
-            //System.out.println(valor);
-            String valor = value.getSelectedText();
-            //Integer teste_i = Integer.valueOf(valor);
-            Integer teste_i = Integer.parseInt(valor);
-            System.out.println(teste_i);
-            this.position = this.position + 1;
+            this.gerar_linha_opcao(item.toString(), new_options_widget, new_options_preco);
         });
 
+    }
+
+    public void gerar_linha_opcao(String item, ArrayList<String> new_options_widget, ArrayList<Float> new_options_preco){
+        // Valor da opção
+        String preco = new_options_preco.get(this.position).toString();
+        Float preco_f = Float.parseFloat(preco);
+
+        // Label da opção
+        JLabel item_label = new JLabel(item);
+        item_label.setBounds(50, 50 + (this.position * 50), 220, 150);
+        item_label.setForeground(Color.decode("#ebf1fb"));
+        this.main_container.add(item_label);
+
+        JLabel item_label_2 = new JLabel("---------------------------------------------");
+        item_label_2.setBounds(250, 50 + (this.position * 50), 250, 150);
+        item_label_2.setForeground(Color.decode("#ebf1fb"));
+        this.main_container.add(item_label_2);
+
+        JLabel item_label_3 = new JLabel("R$ " + String.format("%.02f", preco_f));
+        item_label_3.setBounds(500, 50 + (this.position * 50), 220, 150);
+        item_label_3.setForeground(Color.decode("#ebf1fb"));
+        this.main_container.add(item_label_3);
+
+        JSpinner item_quantidade = new JSpinner();
+        item_quantidade.setValue(Integer.parseInt(pedidos.get(this.position).toString()));
+        item_quantidade.setBounds(570, 115 + (this.position * 50), 60, 20);
+        item_quantidade.setForeground(Color.decode("#ebf1fb"));
+        this.main_container.add(item_quantidade);
+        campos.set(position, item_quantidade);
+
+        this.position = this.position + 1;
     }
 
     public void iniciar_nova_tela(){
@@ -87,6 +114,12 @@ public class Ingredientes {
 		this.main_container.setVisible(true);
 		this.main_container.setLayout(null);
 		this.main_container.setSize(720, 512);
+
+        JLabel title = new JLabel(this.setor);
+		title.setBounds(290, 0, 300, 100);
+		title.setForeground(Color.decode("#ebf1fb"));
+		title.setFont(this.font_padrao);
+		this.main_container.add(title);
 
         // Iniciando botões de cada opção
         this.create_buttons();
@@ -98,12 +131,7 @@ public class Ingredientes {
         voltar.setFont(this.font_button);
         this.main_container.add(voltar);
 
-        JButton finalizar = new JButton("Finalizar");
-        finalizar.setBounds(360, 435, 97, 40);
-        finalizar.setBackground(Color.decode("#28a745"));
-        finalizar.setForeground(Color.decode("#FFFFFF"));
-        finalizar.setFont(this.font_button);
-        this.main_container.add(finalizar);
+        this.main_container.add(this.finalizar);
 
         voltar.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent arg0){
@@ -111,24 +139,6 @@ public class Ingredientes {
                 ultima_tela.setVisible(true);
             }
         });
-
-    }
-
-    
-    public Ingredientes(JFrame main_frame, Font font_button, JPanel ultima_tela, String setor) {
-        this.ultima_tela = ultima_tela;
-        this.main_frame = main_frame;
-        this.font_button = font_button;
-        this.setor = setor;
-
-        // Iniciando opções de compra e preços
-        this.iniciar_opcoes();
-        this.iniciar_precos();
-
-        this.ultima_tela.setVisible(false);
-
-        // Iniciando nova tela
-        this.iniciar_nova_tela();
 
     }
 }
