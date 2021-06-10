@@ -6,15 +6,15 @@ import java.awt.event.ActionListener;
 
 
 public class Cardapio {
-    public String[] setores = {"Pão", "Queijo", "Carne de Porco", "Verdura", "Molho", "Outros"};
+    public String[] setores = {"Pães", "Queijos", "Carnes", "Verduras", "Molhos", "Outros"};
     public JFrame main_frame;
     public Font font_button;
     public JPanel ultima_tela;
 
     public JPanel main_container = new JPanel();
 
-    public void buttonAction(String i){
-        System.out.println(i);
+    public void buttonAction(String setor){
+        Ingredientes nova_tela = new Ingredientes(this.main_frame, this.font_button, this.main_container, setor);
     }
 
     public Cardapio(JFrame main_frame, Font font_button, JPanel ultima_tela) {
@@ -43,6 +43,7 @@ public class Cardapio {
             button.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent arg0){
                     buttonAction(arg0.getActionCommand());
+                    
                 }
             });
         }
