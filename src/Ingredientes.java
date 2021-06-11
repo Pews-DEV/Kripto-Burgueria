@@ -74,7 +74,6 @@ public class Ingredientes {
         new_options_widget.forEach((item) -> {
             this.gerar_linha_opcao(item.toString(), new_options_widget, new_options_preco);
         });
-
     }
 
     public void gerar_linha_opcao(String item, ArrayList<String> new_options_widget, ArrayList<Float> new_options_preco){
