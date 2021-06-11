@@ -10,12 +10,14 @@ import java.util.List;
 
 public class Cardapio {
     public String[] setores = {"Pães", "Queijos", "Carnes", "Verduras", "Molhos", "Outros"};
+    public Float valor_total = 0f;
+    public boolean _retorno = false;
     public JFrame main_frame;
     public Integer contador;
     public JButton finalizar;
-    public boolean _retorno = false;
     public Font font_button;
     public JPanel ultima_tela;
+    public JLabel total;
     public HashMap<String, ArrayList<Integer>> pedido = new HashMap<String, ArrayList<Integer>>();
     public HashMap<String, ArrayList<String>> detalhamento_pedido = new HashMap<String, ArrayList<String>>();
 
@@ -29,20 +31,6 @@ public class Cardapio {
 
         // Iniciando valores do pedido
         this.iniciar_pedido();
-    }
-
-    public boolean test_has_pedidos(){
-        for (int i = 0; i < 6; i++){
-            ArrayList<Integer> options = pedido.get(setores[i]);
-            options.forEach((item) -> {
-                if(item > 0){
-                    _retorno = true;
-                } else if (item < 0){
-                    _retorno = false;
-                }
-            });
-        }
-        return _retorno;
     }
 
     public void buttonAction(String setor){
@@ -90,19 +78,13 @@ public class Cardapio {
 
                 // Setando ingredientes escolhidos
                 pedido.put(setor, novas_quantidades);
+                calculaValorTotal();
             }
         });
 
         nova_tela.start();
 
     }
-
-    public void iniciar_pedido(){
-        for (String item: this.setores){
-            pedido.put(item, new ArrayList<Integer>(List.of(0, 0, 0, 0, 0, 0, 0, 0)));
-        }
-    }
-
 
     public void gerar_botoes(){
 
@@ -111,6 +93,11 @@ public class Cardapio {
 		this.main_container.setVisible(true);
 		this.main_container.setLayout(null);
 		this.main_container.setSize(720, 512);
+
+        total = new JLabel("Total: R$ " + String.format("%.2f", valor_total));
+		total.setBounds(580, 0, 150, 50);
+		total.setForeground(Color.decode("#ebf1fb"));
+		this.main_container.add(total);
 
         for (int i = 0; i < 6; i++){
             JButton button = new JButton(setores[i]);
@@ -145,4 +132,46 @@ public class Cardapio {
         });
 
     }
+
+    public void reset(){
+        pedido = new HashMap<String, ArrayList<Integer>>();
+        detalhamento_pedido = new HashMap<String, ArrayList<String>>();
+        _retorno = false;
+        valor_total = 0f;
+    }
+
+    public void iniciar_pedido(){
+        for (String item: this.setores){
+            pedido.put(item, new ArrayList<Integer>(List.of(0, 0, 0, 0, 0, 0, 0, 0)));
+        }
+    }
+
+    private void calculaValorTotal(){
+        valor_total = 0f;
+        for (String key: detalhamento_pedido.keySet()){
+            ArrayList<String> precos_setor = detalhamento_pedido.get(key);
+
+            Float valor = Float.parseFloat(precos_setor.get(0).toString());
+            Integer quantidade = Integer.parseInt(precos_setor.get(1).toString());
+            
+            valor_total = valor_total + (valor * quantidade);
+        }
+
+        this.total.setText("Total: R$ " + String.format("%.2f", valor_total));
+    }
+
+    public boolean test_has_pedidos(){
+        for (int i = 0; i < 6; i++){
+            ArrayList<Integer> options = pedido.get(setores[i]);
+            options.forEach((item) -> {
+                if(item > 0){
+                    _retorno = true;
+                } else if (item < 0){
+                    _retorno = false;
+                }
+            });
+        }
+        return _retorno;
+    }
+
 }

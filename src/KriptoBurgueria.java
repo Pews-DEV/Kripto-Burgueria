@@ -102,11 +102,8 @@ public class KriptoBurgueria {
 					public void actionPerformed(ActionEvent arg0){
 						if(cardapio.test_has_pedidos()){
 							adicionar_pedido(cardapio.detalhamento_pedido);
-							cardapio.pedido = new HashMap<String, ArrayList<Integer>>();
-							cardapio.detalhamento_pedido = new HashMap<String, ArrayList<String>>();
 							cardapio.iniciar_pedido();
 							cardapio.main_container.setVisible(false);
-							cardapio._retorno = false;
 							main_container.setVisible(true);
 							JOptionPane.showMessageDialog(main_container, "Pedido aceito com sucesso", "Pedidos", JOptionPane.INFORMATION_MESSAGE);
 						} else {
