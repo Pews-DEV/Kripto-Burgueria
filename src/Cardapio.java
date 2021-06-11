@@ -28,9 +28,16 @@ public class Cardapio {
         this.main_frame = main_frame;
         this.font_button = font_button;
         this.ultima_tela = ultima_tela;
-
+        
         // Iniciando valores do pedido
         this.iniciar_pedido();
+
+        // Adicionando botões principais a tela
+        this.gerar_botoes();
+    }
+
+    public void setFinalizar(JButton finalizar){
+        this.main_container.add(finalizar);
     }
 
     public void buttonAction(String setor){
@@ -90,13 +97,13 @@ public class Cardapio {
 
 		this.main_frame.add(this.main_container);
 		this.main_container.setBackground(Color.decode("#212F4D"));
-		this.main_container.setVisible(true);
+		this.main_container.setVisible(false);
 		this.main_container.setLayout(null);
 		this.main_container.setSize(720, 512);
 
-        total = new JLabel("Total: R$ " + String.format("%.2f", this.valor_total));
-		total.setBounds(580, 0, 150, 50);
-		total.setForeground(Color.decode("#ebf1fb"));
+        this.total = new JLabel("Total: R$ " + String.format("%.2f", this.valor_total));
+		this.total.setBounds(580, 0, 150, 50);
+		this.total.setForeground(Color.decode("#ebf1fb"));
 		this.main_container.add(total);
 
         for (int i = 0; i < 6; i++){
@@ -122,7 +129,6 @@ public class Cardapio {
         voltar.setFont(this.font_button);
         this.main_container.add(voltar);
 
-        this.main_container.add(finalizar);
 
         voltar.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent arg0){
@@ -138,17 +144,18 @@ public class Cardapio {
         detalhamento_pedido = new HashMap<String, ArrayList<String>>();
         _retorno = false;
         this.valor_total = 0f;
-        this.total.setText("Total: R$ " + String.format("%.2f", this.valor_total));
+        calculaValorTotal();
     }
 
     public void iniciar_pedido(){
         for (String item: this.setores){
             pedido.put(item, new ArrayList<Integer>(List.of(0, 0, 0, 0, 0, 0, 0, 0)));
-        }
+        };
     }
 
     private void calculaValorTotal(){
-        valor_total = 0f;
+        this.valor_total = 0f;
+
         for (String key: detalhamento_pedido.keySet()){
             ArrayList<String> precos_setor = detalhamento_pedido.get(key);
 

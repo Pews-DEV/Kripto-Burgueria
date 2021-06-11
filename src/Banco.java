@@ -80,7 +80,6 @@ public class Banco {
             session_pedido.setFloat(1, valor_total);
             session_pedido.executeUpdate();
             ResultSet instance = session.getGeneratedKeys();
-            System.out.println(instance);
             Integer id = instance.getInt(1);
 
             // Adicionando ingredientes do pedido

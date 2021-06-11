@@ -89,7 +89,9 @@ public class KriptoBurgueria {
 
 		pedido.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				// setCardapio(new Cardapio(main_frame, font_button, main_container));
 				main_container.setVisible(false);
+				cardapio.main_container.setVisible(true);
 
 				JButton finalizar = new JButton("Finalizar");
 				finalizar.setBounds(360, 435, 97, 40);
@@ -97,12 +99,13 @@ public class KriptoBurgueria {
 				finalizar.setForeground(Color.decode("#FFFFFF"));
 				finalizar.setFont(font_button);
 				
-				cardapio.finalizar = finalizar;
+				cardapio.setFinalizar(finalizar);
 				finalizar.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent arg0){
 						if(cardapio.test_has_pedidos()){
 							adicionar_pedido(cardapio.detalhamento_pedido);
 							cardapio.reset();
+							cardapio.valor_total = 0f;
 							cardapio.iniciar_pedido();
 							cardapio.main_container.setVisible(false);
 							main_container.setVisible(true);
@@ -112,8 +115,6 @@ public class KriptoBurgueria {
 						}
 					}
 				});
-
-				cardapio.gerar_botoes();
 			}
 		});
 
