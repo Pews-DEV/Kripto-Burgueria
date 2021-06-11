@@ -97,7 +97,9 @@ public class Ingredientes {
         item_label_3.setForeground(Color.decode("#ebf1fb"));
         this.main_container.add(item_label_3);
 
-        JSpinner item_quantidade = new JSpinner();
+        SpinnerModel model = new SpinnerNumberModel(0, 0, 100000000, 1);
+
+        JSpinner item_quantidade = new JSpinner(model);
         item_quantidade.setValue(Integer.parseInt(pedidos.get(this.position).toString()));
         item_quantidade.setBounds(570, 115 + (this.position * 50), 60, 20);
         item_quantidade.setForeground(Color.decode("#ebf1fb"));
