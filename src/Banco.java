@@ -74,8 +74,14 @@ public class Banco {
 
             // Criando pedido
             String insert_pedido = "INSERT INTO pedidos(valor_total)" +
-                                   "VALUES(" + valor_total + ")";
-            Integer id = session.executeUpdate(insert_pedido);
+                                   "VALUES(?)";
+            
+            PreparedStatement session_pedido = conn.prepareStatement(insert_pedido, Statement.RETURN_GENERATED_KEYS);
+            session_pedido.setFloat(1, valor_total);
+            session_pedido.executeUpdate();
+            ResultSet instance = session.getGeneratedKeys();
+            System.out.println(instance);
+            Integer id = instance.getInt(1);
 
             // Adicionando ingredientes do pedido
             for (String key: pedido.keySet()){
