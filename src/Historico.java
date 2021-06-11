@@ -30,12 +30,13 @@ public class Historico {
 
 
     public Historico (JFrame main_frame, JPanel ultima_tela) {
-        this.pedidos = banco.getPedidos();
         this.main_frame = main_frame;
         this.ultima_tela = ultima_tela;
     }
 
     public void start(){
+        this.pedidos = banco.getPedidos();
+
         this.ultima_tela.setVisible(false);
 
 		this.main_frame.add(this.main_container);
@@ -114,7 +115,7 @@ public class Historico {
     private void criar_botoes(Integer item, Integer position, Integer pagina){
         Integer ordem = -1 * (((pagina * paginte_by) + 5) - (position + 10));
 
-        JLabel item_label = new JLabel("Pedido " + item);
+        JLabel item_label = new JLabel("Pedido " + (position + 1));
         item_label.setBounds(50, 50 + (ordem * 50), 220, 150);
         item_label.setForeground(Color.decode("#ebf1fb"));
         this.main_container.add(item_label);

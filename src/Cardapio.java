@@ -49,7 +49,7 @@ public class Cardapio {
         ArrayList<Integer> quantidades = this.pedido.get(setor); 
 
         // Criando botão usado para finalizar os pedidos
-        JButton finalizar_ingredientes = new JButton("Finalizar");
+        JButton finalizar_ingredientes = new JButton("Pronto");
         finalizar_ingredientes.setBounds(360, 435, 97, 40);
         finalizar_ingredientes.setBackground(Color.decode("#28a745"));
         finalizar_ingredientes.setForeground(Color.decode("#FFFFFF"));

@@ -3,7 +3,7 @@ import java.util.HashMap;
 import java.util.ArrayList;
 
 public class Banco {
-    public String[] data = {
+    private String[] data = {
         "Pão Francês", "Pão Carteira", "Pão de Hambúrguer", "Pão Árabe",
         "Coalho", "Minas", "Muçarela", "Cream Cheese", "Gorgonzola",
         "Mortadela", "Apresuntado", "Bacon", "Presunto", "Pepperoni", "Salame",
@@ -11,7 +11,7 @@ public class Banco {
         "Maionese", "Ketchup", "Maionese Temperada", "Molho Tártato", "Barbecue",
         "Batata Palha", "Ovo"
     };
-    public Float[] data_precos = {
+    private Float[] data_precos = {
         0.25f, 0.30f, 0.70f, 1.30f,
         1.50f, 1.80f, 2.00f, 3.00f, 3.50f,
         0.50f, 1.00f, 1.30f, 1.60f, 1.80f, 2.00f,
@@ -22,9 +22,6 @@ public class Banco {
 
     public ArrayList<Integer> pedidos_id;
     
-    public Banco(){
-        this.start();
-    }
 
     public Float getValorPedido(Integer pedido){
         String select_pedidos = "SELECT * FROM pedidos WHERE id = " + pedido;
@@ -45,7 +42,7 @@ public class Banco {
     public ArrayList<Integer> getPedidos(){
         pedidos_id = new ArrayList<Integer>();
 
-        String select_pedidos = "SELECT * FROM pedidos";
+        String select_pedidos = "SELECT * FROM pedidos ORDER BY adicionado_em DESC";
         try(Connection conn = DriverManager.getConnection("jdbc:sqlite:storage.db")){
             Statement session = conn.createStatement();
 
@@ -104,21 +101,22 @@ public class Banco {
             Statement session = conn.createStatement();
 
 
-            String create_pedidos = "CREATE TABLE IF NOT EXISTS pedidos (" + 
+            String create_pedidos = "CREATE TABLE IF NOT EXISTS pedidos(" + 
                                     "id INTEGER PRIMARY KEY NOT NULL," +
+                                    "adicionado_em DATETIME DEFAULT CURRENT_TIMESTAMP," +
                                     "valor_total FLOAT NOT NULL)";
 
             session.execute(create_pedidos);
 
 
-            String create_itens = "CREATE TABLE IF NOT EXISTS ingredientes (" + 
+            String create_itens = "CREATE TABLE IF NOT EXISTS ingredientes(" + 
                                   "id INTEGER PRIMARY KEY NOT NULL," +
                                   "nome VARCHAR(40) NOT NULL," + 
                                   "slug VARCHAR(40) NOT NULL UNIQUE," + 
                                   "preco FLOAT NOT NULL)";
             session.execute(create_itens);
 
-            String create_itens_pedidos = "CREATE TABLE IF NOT EXISTS pedidos_ingredientes (" +
+            String create_itens_pedidos = "CREATE TABLE IF NOT EXISTS pedidos_ingredientes(" +
                                           "id INTEGER PRIMARY KEY NOT NULL," +
                                           "pedido_id INTEGER REFERENCES pedidos(id)," +
                                           "ingrediente_id INTEGER REFERENCES ingredientes(id)," +
@@ -138,6 +136,7 @@ public class Banco {
             }
 
         } catch(SQLException e){
+            // System.out.println(e);
         }
     }
     
