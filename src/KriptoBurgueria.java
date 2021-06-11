@@ -15,11 +15,19 @@ public class KriptoBurgueria {
 	public Font font_padrao = new Font("Contrail One", Font.PLAIN, 52);
 	public Font font_button = new Font("roboto", Font.PLAIN, 14);
 	public Cardapio cardapio;
-	public Banco banco = new Banco();
+	public Historico historico;
+	private Banco banco = new Banco();
 
+	public void setCardapio(Cardapio cardapio){
+		this.cardapio = cardapio;
+	}
+	public void setHistorico(Historico historico){
+		this.historico = historico; 
+	}
 	public static void main(String[] args) {
 		KriptoBurgueria app = new KriptoBurgueria();
-		app.cardapio = new Cardapio(app.main_frame, app.font_button, app.main_container);
+		app.setCardapio(new Cardapio(app.main_frame, app.font_button, app.main_container));
+		app.setHistorico(new Historico(app.main_frame, app.main_container));
 		app.configure();
 		app.tela_principal();
 	}
@@ -64,17 +72,18 @@ public class KriptoBurgueria {
 		pedido.setFont(this.font_button);
 		this.main_container.add(pedido);
 
-		JButton historico = new JButton("Historico de pedidos");
-		historico.setBounds(262, 351, 195, 20);
-		historico.setForeground(Color.decode("#FFFFFF"));
-		historico.setBackground(Color.decode("#212F4D"));
-		historico.setFont(this.font_button);
-		this.main_container.add(historico);
+		JButton historico_bt = new JButton("Historico de pedidos");
+		historico_bt.setBounds(262, 351, 195, 20);
+		historico_bt.setForeground(Color.decode("#FFFFFF"));
+		historico_bt.setBackground(Color.decode("#212F4D"));
+		historico_bt.setFont(this.font_button);
+		this.main_container.add(historico_bt);
 
-		historico.addActionListener(new ActionListener() {
+		historico_bt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Historico historico = new Historico(main_frame, main_container);
-				historico.start();
+				historico.ultima_tela.setVisible(false);
+				historico.main_container.setVisible(true);
+				historico.atualizarPedidos();
 			}
 		});
 

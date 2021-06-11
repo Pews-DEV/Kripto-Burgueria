@@ -20,6 +20,14 @@ public class Historico {
     public JPanel ultima_tela;
     public JPanel main_container = new JPanel();
 
+    public void atualizarPedidos(){
+        this.pedidos = banco.getPedidos();
+        main_container.removeAll();
+        main_container.revalidate();
+        main_container.repaint();
+        this.start();
+    }
+
 
     public Historico (JFrame main_frame, JPanel ultima_tela) {
         this.pedidos = banco.getPedidos();
@@ -72,11 +80,12 @@ public class Historico {
             }
         });
 
+        // Criando botoões de paginação
         Integer quantidade = (pedidos.size() + (this.paginte_by * 1) -1 ) / (this.paginte_by * 1);
         gerar_paginacao(quantidade);
     }
 
-    public void gerar_paginacao(Integer quantidade){
+    private void gerar_paginacao(Integer quantidade){
         for (int i=1; i <= quantidade; i++){
             
             JButton paginacao_bt = new JButton("" + i);
@@ -89,6 +98,7 @@ public class Historico {
             paginacao_bt.setForeground(Color.decode("#FFFFFF"));
             this.main_container.add(paginacao_bt);
 
+            // Criando função que destroi e constroi a tela reativamente
             paginacao_bt.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
                     main_container.removeAll();
@@ -101,7 +111,7 @@ public class Historico {
         }
     }
 
-    public void criar_botoes(Integer item, Integer position, Integer pagina){
+    private void criar_botoes(Integer item, Integer position, Integer pagina){
         Integer ordem = -1 * (((pagina * paginte_by) + 5) - (position + 10));
 
         JLabel item_label = new JLabel("Pedido " + item);
