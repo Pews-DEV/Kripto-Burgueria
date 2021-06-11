@@ -94,7 +94,7 @@ public class Cardapio {
 		this.main_container.setLayout(null);
 		this.main_container.setSize(720, 512);
 
-        total = new JLabel("Total: R$ " + String.format("%.2f", valor_total));
+        total = new JLabel("Total: R$ " + String.format("%.2f", this.valor_total));
 		total.setBounds(580, 0, 150, 50);
 		total.setForeground(Color.decode("#ebf1fb"));
 		this.main_container.add(total);
@@ -137,7 +137,8 @@ public class Cardapio {
         pedido = new HashMap<String, ArrayList<Integer>>();
         detalhamento_pedido = new HashMap<String, ArrayList<String>>();
         _retorno = false;
-        valor_total = 0f;
+        this.valor_total = 0f;
+        this.total.setText("Total: R$ " + String.format("%.2f", this.valor_total));
     }
 
     public void iniciar_pedido(){
@@ -154,10 +155,10 @@ public class Cardapio {
             Float valor = Float.parseFloat(precos_setor.get(0).toString());
             Integer quantidade = Integer.parseInt(precos_setor.get(1).toString());
             
-            valor_total = valor_total + (valor * quantidade);
+            this.valor_total = this.valor_total + (valor * quantidade);
         }
 
-        this.total.setText("Total: R$ " + String.format("%.2f", valor_total));
+        this.total.setText("Total: R$ " + String.format("%.2f", this.valor_total));
     }
 
     public boolean test_has_pedidos(){

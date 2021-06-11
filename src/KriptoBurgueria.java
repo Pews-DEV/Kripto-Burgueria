@@ -102,6 +102,7 @@ public class KriptoBurgueria {
 					public void actionPerformed(ActionEvent arg0){
 						if(cardapio.test_has_pedidos()){
 							adicionar_pedido(cardapio.detalhamento_pedido);
+							cardapio.reset();
 							cardapio.iniciar_pedido();
 							cardapio.main_container.setVisible(false);
 							main_container.setVisible(true);
