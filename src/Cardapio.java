@@ -17,6 +17,7 @@ public class Cardapio {
     public Font font_button;
     public JPanel ultima_tela;
     public HashMap<String, ArrayList<Integer>> pedido = new HashMap<String, ArrayList<Integer>>();
+    public HashMap<String, ArrayList<String>> detalhamento_pedido = new HashMap<String, ArrayList<String>>();
 
     public JPanel main_container = new JPanel();
 
@@ -36,6 +37,8 @@ public class Cardapio {
             options.forEach((item) -> {
                 if(item > 0){
                     _retorno = true;
+                } else if (item < 0){
+                    _retorno = false;
                 }
             });
         }
@@ -70,8 +73,18 @@ public class Cardapio {
                 ArrayList<Integer> novas_quantidades = new ArrayList<Integer>(List.of(0, 0, 0, 0, 0 ,0 ,0 ,0 ,0));
                 contador = 0;
                 nova_tela.campos.forEach((item) -> {
-                    Integer new_item = Integer.parseInt(item.getValue().toString());
-                    novas_quantidades.set(contador, new_item);
+                    Integer quantidade_item = Integer.parseInt(item.getValue().toString());
+                    novas_quantidades.set(contador, quantidade_item);
+                    
+                    if (nova_tela.options.get(setor).size() > contador){
+                        String _quantidade_item = quantidade_item.toString();
+                        String price_item = nova_tela.precos.get(setor).get(contador).toString();
+                        String name_item = nova_tela.options.get(setor).get(contador).toString();
+                        if (quantidade_item > 0){
+                            detalhamento_pedido.put(name_item, new ArrayList<>(List.of(price_item, _quantidade_item)));
+                        }
+                    }
+
                     contador ++;
                 });
 

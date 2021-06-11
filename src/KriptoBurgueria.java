@@ -15,6 +15,7 @@ public class KriptoBurgueria {
 	public Font font_padrao = new Font("Contrail One", Font.PLAIN, 52);
 	public Font font_button = new Font("roboto", Font.PLAIN, 14);
 	public Cardapio cardapio;
+	public Banco banco = new Banco();
 
 	public static void main(String[] args) {
 		KriptoBurgueria app = new KriptoBurgueria();
@@ -24,11 +25,16 @@ public class KriptoBurgueria {
 	}
 
 	public void configure() {
+		this.banco.start();
 		this.main_frame.setLayout(null);
 		this.main_frame.setSize(720, 512);
 		this.main_frame.setVisible(true);
 		this.main_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.main_frame.getContentPane().setBackground(Color.decode("#212F4D"));
+	}
+
+	public void adicionar_pedido(HashMap<String, ArrayList<String>> pedido){
+		banco.adicionar_pedido(pedido);
 	}
 
 	public void tela_principal() {
@@ -65,6 +71,13 @@ public class KriptoBurgueria {
 		historico.setFont(this.font_button);
 		this.main_container.add(historico);
 
+		historico.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Historico historico = new Historico(main_frame, main_container);
+				historico.start();
+			}
+		});
+
 		pedido.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				main_container.setVisible(false);
@@ -79,7 +92,9 @@ public class KriptoBurgueria {
 				finalizar.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent arg0){
 						if(cardapio.test_has_pedidos()){
+							adicionar_pedido(cardapio.detalhamento_pedido);
 							cardapio.pedido = new HashMap<String, ArrayList<Integer>>();
+							cardapio.detalhamento_pedido = new HashMap<String, ArrayList<String>>();
 							cardapio.iniciar_pedido();
 							cardapio.main_container.setVisible(false);
 							cardapio._retorno = false;
