@@ -9,11 +9,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Ingredientes {
-    public JPanel ultima_tela;
-    public Font font_button;
-	public Font font_padrao = new Font("Contrail One", Font.PLAIN, 48);
-    public JFrame main_frame;
+public class Ingredientes extends Janela {
     public JButton finalizar;
     public ArrayList<Integer> pedidos;
     public ArrayList<JSpinner> campos = new ArrayList<JSpinner>(
@@ -23,15 +19,11 @@ public class Ingredientes {
     private String setor;
     private Integer position = 0; 
 
-    public JPanel main_container = new JPanel();
-
     public HashMap<String, ArrayList<String>> options = new HashMap<String, ArrayList<String>>();
     public HashMap<String, ArrayList<Float>> precos = new HashMap<String, ArrayList<Float>>();
 
     public Ingredientes(JFrame main_frame, Font font_button, JPanel ultima_tela, String setor, ArrayList<Integer> pedidos, JButton finalizar) {
-        this.ultima_tela = ultima_tela;
-        this.main_frame = main_frame;
-        this.font_button = font_button;
+        super(main_frame, font_button, ultima_tela);
         this.setor = setor;
         this.pedidos = pedidos;
         this.finalizar = finalizar;
@@ -44,6 +36,7 @@ public class Ingredientes {
         this.iniciar_precos();
 
         this.ultima_tela.setVisible(false);
+		this.configure();
 
         // Iniciando nova tela
         this.iniciar_nova_tela();
@@ -83,17 +76,17 @@ public class Ingredientes {
 
         // Label da opção
         JLabel item_label = new JLabel(item);
-        item_label.setBounds(50, 50 + (this.position * 50), 220, 150);
+        item_label.setBounds(75, 50 + (this.position * 50), 220, 150);
         item_label.setForeground(Color.decode("#ebf1fb"));
         this.main_container.add(item_label);
 
         JLabel item_label_2 = new JLabel("---------------------------------------------");
-        item_label_2.setBounds(250, 50 + (this.position * 50), 250, 150);
+        item_label_2.setBounds(275, 50 + (this.position * 50), 250, 150);
         item_label_2.setForeground(Color.decode("#ebf1fb"));
         this.main_container.add(item_label_2);
 
         JLabel item_label_3 = new JLabel("R$ " + String.format("%.02f", preco_f));
-        item_label_3.setBounds(500, 50 + (this.position * 50), 220, 150);
+        item_label_3.setBounds(525, 50 + (this.position * 50), 220, 150);
         item_label_3.setForeground(Color.decode("#ebf1fb"));
         this.main_container.add(item_label_3);
 
@@ -101,7 +94,7 @@ public class Ingredientes {
 
         JSpinner item_quantidade = new JSpinner(model);
         item_quantidade.setValue(Integer.parseInt(pedidos.get(this.position).toString()));
-        item_quantidade.setBounds(570, 115 + (this.position * 50), 60, 20);
+        item_quantidade.setBounds(595, 115 + (this.position * 50), 60, 20);
         item_quantidade.setForeground(Color.decode("#ebf1fb"));
         this.main_container.add(item_quantidade);
         campos.set(position, item_quantidade);
@@ -110,11 +103,6 @@ public class Ingredientes {
     }
 
     public void iniciar_nova_tela(){
-		this.main_frame.add(this.main_container);
-		this.main_container.setBackground(Color.decode("#212F4D"));
-		this.main_container.setVisible(true);
-		this.main_container.setLayout(null);
-		this.main_container.setSize(720, 512);
 
         JLabel title = new JLabel(this.setor);
 		title.setBounds(290, 0, 300, 100);
@@ -125,21 +113,6 @@ public class Ingredientes {
         // Iniciando botões de cada opção
         this.create_buttons();
 
-        JButton voltar = new JButton("Voltar");
-        voltar.setBounds(262, 435, 97, 40);
-        voltar.setBackground(Color.decode("#FF0000"));
-        voltar.setForeground(Color.decode("#FFFFFF"));
-        voltar.setFont(this.font_button);
-        this.main_container.add(voltar);
-
         this.main_container.add(this.finalizar);
-
-        voltar.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent arg0){
-                main_container.setVisible(false);
-                ultima_tela.setVisible(true);
-            }
-        });
-
     }
 }

@@ -27,7 +27,7 @@ public class KriptoBurgueria {
 	public static void main(String[] args) {
 		KriptoBurgueria app = new KriptoBurgueria();
 		app.setCardapio(new Cardapio(app.main_frame, app.font_button, app.main_container));
-		app.setHistorico(new Historico(app.main_frame, app.main_container));
+		app.setHistorico(new Historico(app.main_frame, app.font_button, app.main_container));
 		app.configure();
 		app.tela_principal();
 	}

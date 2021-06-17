@@ -7,18 +7,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-public class Historico {
+public class Historico extends Janela {
     public Banco banco = new Banco();
     public ArrayList<Integer> pedidos;
     private Integer position;
     public Integer paginte_by = 5;
     public Integer pagina = 1;
-	public Font font_padrao = new Font("Contrail One", Font.PLAIN, 52);
-	public Font font_button = new Font("roboto", Font.PLAIN, 14);
-
-    public JFrame main_frame;
-    public JPanel ultima_tela;
-    public JPanel main_container = new JPanel();
+	
 
     public void atualizarPedidos(){
         this.pedidos = banco.getPedidos();
@@ -29,9 +24,8 @@ public class Historico {
     }
 
 
-    public Historico (JFrame main_frame, JPanel ultima_tela) {
-        this.main_frame = main_frame;
-        this.ultima_tela = ultima_tela;
+    public Historico (JFrame main_frame, Font font_button, JPanel ultima_tela) {
+        super(main_frame, font_button, ultima_tela);
     }
 
     public void start(){
@@ -39,18 +33,12 @@ public class Historico {
 
         this.ultima_tela.setVisible(false);
 
-		this.main_frame.add(this.main_container);
-		this.main_container.setBackground(Color.decode("#212F4D"));
-		this.main_container.setVisible(true);
-		this.main_container.setLayout(null);
-		this.main_container.setSize(720, 512);
-
         this.iniciar_widgets();
         
     }
 
     public void iniciar_widgets(){
-
+        this.configure();
 
         JLabel title = new JLabel("Histórico");
 		title.setBounds(290, 0, 300, 100);
@@ -66,20 +54,6 @@ public class Historico {
             this.position = position + 1;
         });
 
-        JButton voltar = new JButton("Voltar");
-
-        voltar.setBounds(300, 435, 97, 40);
-        voltar.setBackground(Color.decode("#FF0000"));
-        voltar.setForeground(Color.decode("#FFFFFF"));
-        voltar.setFont(this.font_button);
-        this.main_container.add(voltar);
-
-        voltar.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent arg0){
-                main_container.setVisible(false);
-                ultima_tela.setVisible(true);
-            }
-        });
 
         // Criando botoões de paginação
         Integer quantidade = (pedidos.size() + (this.paginte_by * 1) -1 ) / (this.paginte_by * 1);
@@ -138,7 +112,13 @@ public class Historico {
         detalhes.setBackground(Color.decode("#212F4D"));
         this.main_container.add(detalhes);
 
-
+        detalhes.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                main_container.setVisible(false);
+                Pedido pedido = new Pedido(main_frame, font_button, main_container, item);
+                pedido.start();
+            }
+        });
     }
 }
 

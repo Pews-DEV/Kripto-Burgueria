@@ -1,6 +1,7 @@
 import java.sql.*;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Banco {
     private String[] data = {
@@ -11,6 +12,7 @@ public class Banco {
         "Maionese", "Ketchup", "Maionese Temperada", "Molho Tártato", "Barbecue",
         "Batata Palha", "Ovo"
     };
+
     private Float[] data_precos = {
         0.25f, 0.30f, 0.70f, 1.30f,
         1.50f, 1.80f, 2.00f, 3.00f, 3.50f,
@@ -37,6 +39,41 @@ public class Banco {
         }
 
         return 0f;
+    }
+
+    public ArrayList<ArrayList<String>> getIngredientes(Integer id_pedido){
+        ArrayList<ArrayList<String>> ingredientes = new ArrayList<ArrayList<String>>();
+        String select_ingredientes = "SELECT * " + 
+                                     "FROM pedidos_ingredientes pi " +
+                                     "INNER JOIN " +
+                                       "ingredientes i " +
+                                     "ON " +
+                                        "i.id = pi.ingrediente_id " +
+                                     "WHERE pedido_id = " + id_pedido;
+
+        try(Connection conn = DriverManager.getConnection("jdbc:sqlite:storage.db")){
+            Statement session = conn.createStatement();
+
+            ResultSet instances = session.executeQuery(select_ingredientes);
+            while (instances.next()){
+                String quantidade = instances.getString("quantidade");
+                String valor = instances.getString("preco");
+                String nome = instances.getString("nome");
+
+                ArrayList<String> ingrediente = new ArrayList<String>(
+                    List.of(
+                        nome, quantidade, valor
+                    )
+                );
+
+                ingredientes.add(ingrediente);
+            };
+
+        } catch(SQLException e){
+            System.out.println(e);
+        }
+        
+        return ingredientes;
     }
 
     public ArrayList<Integer> getPedidos(){

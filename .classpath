@@ -6,6 +6,6 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/home/zepedro/Downloads/jdbc2.jar"/>
+	<classpathentry kind="lib" path="jdbc.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
