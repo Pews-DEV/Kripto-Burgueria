@@ -59,12 +59,12 @@ public class Ingredientes {
     }
 
     public void iniciar_precos(){
-        precos.put("Pães", new ArrayList<>(List.of(0.25f, 0.30f, 0.70f, 1.30f)));
-        precos.put("Queijos", new ArrayList<>(List.of(1.50f, 1.80f, 2.00f, 3.00f, 3.50f)));
+        precos.put("Pães", new ArrayList<>(List.of(0.25f, 0.30f, 0.70f, 1.30f, 0f, 0f, 0f)));
+        precos.put("Queijos", new ArrayList<>(List.of(1.50f, 1.80f, 2.00f, 3.00f, 3.50f, 0f)));
         precos.put("Carnes", new ArrayList<>(List.of(0.50f, 1.00f, 1.30f, 1.60f, 1.80f, 2.00f)));
-        precos.put("Verduras", new ArrayList<>(List.of(0.30f, 0.45f, 0.50f, 0.50f)));
-        precos.put("Molhos", new ArrayList<>(List.of(0.50f, 0.50f, 0.70f, 1.00f, 1.50f)));
-        precos.put("Outros", new ArrayList<>(List.of(1.00f, 1.00f)));
+        precos.put("Verduras", new ArrayList<>(List.of(0.30f, 0.45f, 0.50f, 0.50f, 0f, 0f)));
+        precos.put("Molhos", new ArrayList<>(List.of(0.50f, 0.50f, 0.70f, 1.00f, 1.50f, 0f)));
+        precos.put("Outros", new ArrayList<>(List.of(1.00f, 1.00f, 0f, 0f, 0f, 0f, 0f, 0f)));
     }
 
     public void create_buttons(){
@@ -74,7 +74,6 @@ public class Ingredientes {
         new_options_widget.forEach((item) -> {
             this.gerar_linha_opcao(item.toString(), new_options_widget, new_options_preco);
         });
-
     }
 
     public void gerar_linha_opcao(String item, ArrayList<String> new_options_widget, ArrayList<Float> new_options_preco){
@@ -98,7 +97,9 @@ public class Ingredientes {
         item_label_3.setForeground(Color.decode("#ebf1fb"));
         this.main_container.add(item_label_3);
 
-        JSpinner item_quantidade = new JSpinner();
+        SpinnerModel model = new SpinnerNumberModel(0, 0, 100000000, 1);
+
+        JSpinner item_quantidade = new JSpinner(model);
         item_quantidade.setValue(Integer.parseInt(pedidos.get(this.position).toString()));
         item_quantidade.setBounds(570, 115 + (this.position * 50), 60, 20);
         item_quantidade.setForeground(Color.decode("#ebf1fb"));
