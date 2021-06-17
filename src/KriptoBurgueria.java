@@ -7,8 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-// import jdk.internal.org.jline.reader.impl.BufferImpl;
-
 public class KriptoBurgueria {
 	public JFrame main_frame = new JFrame("Kripto Lanchonete - v1.0");
 	public JPanel main_container = new JPanel();

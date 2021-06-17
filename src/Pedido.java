@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Pedido extends Janela {
-    private Integer pedido;
     private Float valor_total;
     public Integer paginte_by = 5;
     public Integer pagina = 1;
@@ -17,7 +16,6 @@ public class Pedido extends Janela {
 
     public Pedido(JFrame main_frame, Font font_button, JPanel ultima_tela, Integer pedido){
         super(main_frame, font_button, ultima_tela);
-        this.pedido = pedido;
         this.valor_total = banco.getValorPedido(pedido);
         this.ingredientes = banco.getIngredientes(pedido);
     }
@@ -60,7 +58,7 @@ public class Pedido extends Janela {
         Integer quantidade = Integer.parseInt(item.get(1).toString());
         Float valor = Float.parseFloat(item.get(2).toString());
         
-        JLabel ingredienteNome = new JLabel(nome);
+        JLabel ingredienteNome = new JLabel(nome + " (" + quantidade + ")");
         ingredienteNome.setBounds(75, 50 + (i * 50), 220, 150);
         ingredienteNome.setForeground(Color.decode("#ebf1fb"));
         this.main_container.add(ingredienteNome);
@@ -70,7 +68,7 @@ public class Pedido extends Janela {
         ingredienteEspace1.setForeground(Color.decode("#ebf1fb"));
         this.main_container.add(ingredienteEspace1);
 
-        JLabel ingredienteValor = new JLabel("R$ " + String.format("%.02f", valor) + " (" + quantidade + ")");
+        JLabel ingredienteValor = new JLabel("R$ " + String.format("%.02f", valor * quantidade));
         ingredienteValor.setBounds(575, 50 + (i * 50), 220, 150);
         ingredienteValor.setForeground(Color.decode("#ebf1fb"));
         this.main_container.add(ingredienteValor);
